@@ -1,0 +1,39 @@
+.survey-question-table
+    width: 90% !important
+    margin: 0 auto
+    padding: 20px
+    margin-top: 20px
+    box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.15) !important
+    thead
+        th
+            font-weight: 600
+    .top-description
+        .top
+            border-bottom: 1px solid #e0e0e0
+            .logo
+                img
+        .bottom
+            h1
+                font-size: 18px
+            p
+                font-size: 14px
+    .MuiTableBody-root
+        tr
+            &.error
+                background-color: #FFE8E6
+                color: #DB2828
+                -webkit-box-shadow: 0px 0px 0px 1px #DB2828 inset, 0px 0px 0px 0px rgba(0, 0, 0, 0)
+                box-shadow: 0px 0px 0px 1px #DB2828 inset, 0px 0px 0px 0px rgba(0, 0, 0, 0)
+                td
+                    color: #DB2828
+        .table-question
+            text-align: left
+            span
+                display: block
+        .table-input
+            text-align: center
+            input
+                &:hover
+                    cursor: pointer
+    th.MuiTableCell-root.MuiTableCell-head.table-header-title
+        text-align: center

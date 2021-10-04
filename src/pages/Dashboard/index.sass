@@ -1,0 +1,39 @@
+.App
+    padding-bottom: 50px
+.dashboard-container
+    width: 90%
+    margin: 0 auto
+    text-align: center
+    .CreateSurveyLink
+        color: black
+    p.no-surveys
+        font-size: 12px
+        font-style: italic
+    #CreateSurvey
+        border: 1px solid black
+        width: 150px
+        margin: 0 auto
+        padding: 20px 0px
+        border-radius: 5px
+        margin-top: 20px
+        position: relative
+        overflow: hidden
+        &:hover
+            cursor: pointer
+        #createSurveySwiper
+            position: absolute
+            top: -100px
+            left: -50px
+            height: 200px
+            width: 50px
+            background-color: #165ea5
+            opacity: 0.2
+            transform: rotateZ(30deg)
+            transition: all 0.25s ease
+        &:hover
+            border-color: #165ea5
+            svg
+                fill: #165ea5
+            #createSurveySwiper
+                top: 0%
+                left: 100%
