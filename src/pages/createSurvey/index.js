@@ -45,7 +45,11 @@ class createSurvey extends React.Component{
     }
 
     changeTextVal = (e,textField) =>{
-        this.props.changeTextVal(textField,e.target.value);
+        this.props.changeTextVal(textField,e.target.value,this.props.newSurvey);
+    }
+
+    finishNewSurvey = () => {
+        console.log("finishing new survey",this.props.newSurvey)
     }
 
     render(){
@@ -70,7 +74,7 @@ class createSurvey extends React.Component{
                             <Button variant="contained" endIcon={<PostAddIcon />} onClick = {this.addPage}>
                                 Add Page
                             </Button>
-                            <Button id='completeCreateSurvey' variant="contained" endIcon={<CheckIcon />}>
+                            <Button id='completeCreateSurvey' variant="contained" endIcon={<CheckIcon />} onClick = {this.finishNewSurvey}>
                                 Finish
                             </Button>
                         </div>
@@ -89,7 +93,7 @@ const mapStateToProps = (store) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    changeTextVal: (textField, newText) => dispatch(changeTextVal(textField,newText)),
+    changeTextVal: ( textField, newText,newSurvey ) => dispatch(changeTextVal( textField,newText,newSurvey )),
     updatePages: (SurveyPages) => dispatch(updatePages(SurveyPages))
 })
 

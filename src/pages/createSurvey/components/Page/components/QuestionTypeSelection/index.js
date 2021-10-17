@@ -7,6 +7,7 @@ const QuestionTypeSelection = (props) =>{
     return(
         <>
             <p className='choose-type-p'>Choose type of question you will be asking on this page.</p>
+
             <div className = 'question-type'>
                 <Button variant="outlined" onClick = {(e) => props.selectQuestionType(1)}>
                     <div className ='mc-container'>
@@ -18,6 +19,7 @@ const QuestionTypeSelection = (props) =>{
                     </div>
                 </Button>
             </div>
+            
         </>
     )
 }

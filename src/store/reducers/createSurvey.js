@@ -10,12 +10,8 @@ const intialState = {
 
 export default ( state = intialState, action ) => {
     switch(action.type){
-        case "changeTextVal":{
-            let newState = {...state};
-            newState.newSurvey[`${action.payload.textField}`] = action.payload.newText;
-            console.log(newState);
-           //return {...state, newSurvey: JSON.parse(JSON.stringify(newState))};
-            return {...state};
+        case "UPDATE_PAGE_SUMMARY_TEXTFIELDS_UPDATE":{
+            return {...state, newSurvey: JSON.parse(JSON.stringify(action.newSurvey))};
         }
         case "updatePages":{
             let newState = {
@@ -38,9 +34,10 @@ export default ( state = intialState, action ) => {
             newState.newSurvey.pages[action.payload.pageID - 1][`${action.payload.textField}`] = action.payload.newText;
             return newState;
         }
-        case "REMOVE_PAGE":
+        case "REMOVE_PAGE_UPDATE":
+            console.log(action)
             return {...state, newSurvey: JSON.parse(JSON.stringify(action.newSurvey))};
-        case "UPDATE_QUESTIONS_AND_ANSWERS":
+        case "UPDATE_QUESTIONS_AND_ANSWERS_UPDATE":
             return {...state, newSurvey: JSON.parse(JSON.stringify(action.newSurvey))};
         default:
             return state;
