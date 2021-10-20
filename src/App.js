@@ -1,3 +1,4 @@
+import "./config/";
 import React from 'react';
 import TopBar from './components/shared/TopBar';
 import Survey from './pages/Survey';
@@ -11,7 +12,7 @@ import SurveyCreation from './pages/createSurvey';
 import Dashboard from './pages/Dashboard';
 import "./index.sass";
 import './App.css';
-
+console.log(process.config)
 class App extends React.Component{
   render(){
     return (  

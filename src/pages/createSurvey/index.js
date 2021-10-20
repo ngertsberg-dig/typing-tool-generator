@@ -7,10 +7,12 @@ import Page from "./components/Page";
 import CheckIcon from '@mui/icons-material/Check';
 import { connect } from 'react-redux';
 import { TweenMax, Power4 } from "gsap";
+import axios from "axios";
 import "./index.sass";
 import {
     changeTextVal,
-    updatePages
+    updatePages,
+    finishCreatingSurvey
 } from "../../store/actions/createSurvey";
 
 
@@ -48,8 +50,8 @@ class createSurvey extends React.Component{
         this.props.changeTextVal(textField,e.target.value,this.props.newSurvey);
     }
 
-    finishNewSurvey = () => {
-        console.log("finishing new survey",this.props.newSurvey)
+    finishNewSurvey = async () => {
+        this.props.finishCreatingSurvey(this.props.newSurvey);
     }
 
     render(){
@@ -94,7 +96,8 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     changeTextVal: ( textField, newText,newSurvey ) => dispatch(changeTextVal( textField,newText,newSurvey )),
-    updatePages: (SurveyPages) => dispatch(updatePages(SurveyPages))
+    updatePages: (SurveyPages) => dispatch(updatePages(SurveyPages)),
+    finishCreatingSurvey: ( surveyJson ) => dispatch(finishCreatingSurvey( surveyJson ))
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(createSurvey);
