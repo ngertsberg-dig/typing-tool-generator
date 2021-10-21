@@ -3,6 +3,7 @@ import DashboardHeader from "../../components/DashboardHeader";
 import AddIcon from '@mui/icons-material/Add';
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 import "./index.sass";
 
 class Dashboard extends React.Component{
@@ -29,4 +30,4 @@ class Dashboard extends React.Component{
 const mapStateToProps = (store) =>({
 });
 
-export default connect( mapStateToProps, {})(Dashboard);
+export default withRouter(connect( mapStateToProps, {})(Dashboard));

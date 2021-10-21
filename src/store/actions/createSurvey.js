@@ -22,7 +22,28 @@ export const finishCreatingSurvey = ( surveyJSON ) => async (dispatch) =>{
   try{
     const response = await axios.post("survey/createNewSurvey", { surveyJSON });
     if(response.status === 200){
-      console.log(response.data);
+      return { id:response.data, success:true} ;
     }
   }catch(error){console.log(error)}
 }
+
+
+export const getSurveyByID = ( surveyID ) => async (dispatch) =>{
+  const axios = axiosConfig();
+  try{
+    const response = await axios.post("survey/getSurveyByID", { surveyID });
+    if(response.status === 200){
+      return { res: response.data, success: true };
+    }
+
+  }catch(err){console.log(err)}
+}
+
+export const setSurveyJSON = ( surveyJSON ) => async (dispatch) => {
+  dispatch({ type: "setSurveyJSON", payload: { surveyJSON }});
+};
+
+export const resetNewSurvey = () => async (dispatch) => {
+  dispatch({ type: "resetNewSurvey"});
+};
+

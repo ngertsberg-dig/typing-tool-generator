@@ -24,7 +24,16 @@
     .base-inputs
         display: flex
         flex-direction: column
+        input
+            &.not-filled
+                border: 1px solid #E23636
+                border-radius: 5px
         .MuiFormControl-root
             margin: 10px 0px
         .remove-margins
             margin: 0px
+
+.dashboard-container
+    &[data-createorupdate="1"]
+        .new-page
+                opacity: 0

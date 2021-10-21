@@ -12,12 +12,12 @@ import SurveyCreation from './pages/createSurvey';
 import Dashboard from './pages/Dashboard';
 import "./index.sass";
 import './App.css';
-console.log(process.config)
 class App extends React.Component{
   render(){
     return (  
       <Provider store={store}>
         <div className="App">
+          <div id = 'errorContainer'>Please fill out all inputs</div>
           {/* <Router basename={`typingtools/${baseName}`}> */}
           <Router basename="">
             <Switch>
@@ -36,6 +36,9 @@ class App extends React.Component{
               <Route path = {`/createSurvey`}>
                 <SurveyCreation />
               </Route>
+              
+              <Route path = {`/survey/:id`} component={SurveyCreation} />
+
               <Route path = {`/`}>
                 <Dashboard />
               </Route>

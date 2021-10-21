@@ -5,6 +5,12 @@ const intialState = {
         documentationURL: "",
         pages: []
     },
+    newSurveyOriginalCopy: {
+        surveyName: "",
+        apiURL: "",
+        documentationURL: "",
+        pages: []
+    },
     test:"test"
 }
 
@@ -35,10 +41,13 @@ export default ( state = intialState, action ) => {
             return newState;
         }
         case "REMOVE_PAGE_UPDATE":
-            console.log(action)
             return {...state, newSurvey: JSON.parse(JSON.stringify(action.newSurvey))};
         case "UPDATE_QUESTIONS_AND_ANSWERS_UPDATE":
             return {...state, newSurvey: JSON.parse(JSON.stringify(action.newSurvey))};
+        case "setSurveyJSON":
+            return {...state, newSurvey: JSON.parse((action.payload.surveyJSON.survey_json))};
+        case "resetNewSurvey":
+            return {...state, newSurvey: JSON.parse(JSON.stringify(state.newSurveyOriginalCopy))};
         default:
             return state;
     }
