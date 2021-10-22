@@ -9,7 +9,7 @@ import Box from '@material-ui/core/Box';
 import { Link } from "react-router-dom";
 import './index.sass';
 import { withRouter } from "react-router-dom";
-import { documentationURL } from '../../surveySections';
+import { documentationURL } from '../../../surveySections';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -65,12 +65,8 @@ const SimpleTabs = (props) =>{
   console.log(process.env.PUBLIC_URL)
   return (
     <div className={classes.root}>
-      <AppBar position="static">
-        <div className = 'top-tab-logo'>
-          <img src = {process.env.PUBLIC_URL + "/img/Dig-Logo.png"} alt = "Company Logo"/>
-        </div>
-        <Tabs  value={value} onChange={handleChange} aria-label="simple tabs example">
-
+      <AppBar position="static" className='survey-headerbar'>
+        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
             <Tab value = {0} label="Survey" {...a11yProps(0)} to="/" component={Link} />
             <Tab  label="File Upload" {...a11yProps(1)} to="/fileupload" component={Link}/>
             <Tab  label="About Dig Insights" {...a11yProps(2)} onClick = {aboutDig} />

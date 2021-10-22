@@ -3,7 +3,7 @@ const intialState = {
         surveyName: "",
         apiURL: "",
         documentationURL: "",
-        pages: []
+        pages: [],
     },
     newSurveyOriginalCopy: {
         surveyName: "",
@@ -11,13 +11,16 @@ const intialState = {
         documentationURL: "",
         pages: []
     },
-    test:"test"
+    digvarcount: 0
 }
 
 export default ( state = intialState, action ) => {
     switch(action.type){
         case "UPDATE_PAGE_SUMMARY_TEXTFIELDS_UPDATE":{
             return {...state, newSurvey: JSON.parse(JSON.stringify(action.newSurvey))};
+        }
+        case "updateDigVarCount":{
+            return {...state, digvarcount: (state.digvarcount + 1)};
         }
         case "updatePages":{
             let newState = {
@@ -43,11 +46,11 @@ export default ( state = intialState, action ) => {
         case "REMOVE_PAGE_UPDATE":
             return {...state, newSurvey: JSON.parse(JSON.stringify(action.newSurvey))};
         case "UPDATE_QUESTIONS_AND_ANSWERS_UPDATE":
-            return {...state, newSurvey: JSON.parse(JSON.stringify(action.newSurvey))};
+            return {...state, newSurvey: JSON.parse(JSON.stringify(action.newSurvey)), digvarcount: action.newDigVarCount};
         case "setSurveyJSON":
             return {...state, newSurvey: JSON.parse((action.payload.surveyJSON.survey_json))};
         case "resetNewSurvey":
-            return {...state, newSurvey: JSON.parse(JSON.stringify(state.newSurveyOriginalCopy))};
+            return {...state, newSurvey: JSON.parse(JSON.stringify(state.newSurveyOriginalCopy)), digvarcount: 0};
         default:
             return state;
     }

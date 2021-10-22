@@ -4,7 +4,7 @@ const intialState = {
     surveys: []
 }
 
-export const dashboard = ( state = intialState, action ) => {
+export default ( state = intialState, action ) => {
     switch(action.type){
         case "testTest":{
             const newState = {...state};

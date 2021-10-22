@@ -1,12 +1,13 @@
 import "./config/";
 import React from 'react';
-import TopBar from './components/shared/TopBar';
-import Survey from './pages/Survey';
-import FileUpload from './pages/FileUpload';
+import TopBar from './pages/SurveyPreview/shared/TopBar.js';
+import Survey from './pages/SurveyPreview/Survey';
+//import FileUpload from './pages/SurveyPreview/FileUpload';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import store from "./store/store.js";
 import { Provider } from "react-redux";
 import surveySections from './surveySections.js';
+import DashboardHeader from "./components/DashboardHeader";
 
 import SurveyCreation from './pages/createSurvey';
 import Dashboard from './pages/Dashboard';
@@ -17,17 +18,23 @@ class App extends React.Component{
     return (  
       <Provider store={store}>
         <div className="App">
+         
           <div id = 'errorContainer'>Please fill out all inputs</div>
           {/* <Router basename={`typingtools/${baseName}`}> */}
           <Router basename="">
+            <DashboardHeader />
             <Switch>
-
               {/* Survey */}
               <Route path = {`/fileupload`}>
                 <TopBar />
-                <FileUpload sections={surveySections} />
+                {/* <FileUpload sections={surveySections} /> */}
               </Route>
               <Route path = {`/surveyTest`}>
+                <TopBar />
+                <Survey />
+              </Route>
+
+              <Route path = {`/preview/:id`} component={Survey}>
                 <TopBar />
                 <Survey />
               </Route>

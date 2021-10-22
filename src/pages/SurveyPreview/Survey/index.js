@@ -1,9 +1,17 @@
 import React from 'react';
-import SurveySectionsTable from '../../components/SurveyQuestions/';
-import Loader from '../../components/Loader/';
-import SurveyDone from '../../components/SurveyDone/';
-import surveySections from '../../surveySections.js';
-import { apiURL } from '../../surveySections.js';
+import SurveySectionsTable from '../SurveyQuestions/';
+import Loader from '../Loader/';
+import SurveyDone from '../SurveyDone/';
+import surveySections from '../../../surveySections.js';
+import { apiURL } from '../../../surveySections.js';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import {
+  getSurveyPreviewJSON
+} from "../../../store/actions/surveyPreview";
+
+import "./index.sass";
 
 class Survey extends React.Component{
   state = {
@@ -21,8 +29,11 @@ class Survey extends React.Component{
     this.backPage = this.backPage.bind(this);
     this.surveyReset = this.surveyReset.bind(this);
   }
-  componentDidMount(){
-    this.setState({surveySections});
+  async componentDidMount(){
+    const userID = this.props.userID;
+    const surveyID = this.props.match.params.id;
+    const surveyJSON = await this.props.getSurveyPreviewJSON( userID, surveyID );
+    this.setState({ surveySections: JSON.parse(surveyJSON.survey_json) });
   }
   surveyReset(){
     this.setState({
@@ -37,6 +48,7 @@ class Survey extends React.Component{
     answersCopy[digVar] = value;
     this.setState({ answers: answersCopy });
     const clickedParentName = "." + e.target.getAttribute("name");
+    console.log(digVar)
     if(document.querySelector(clickedParentName).classList.contains("error")){
       document.querySelector(clickedParentName).classList.remove("error")
     }
@@ -63,7 +75,7 @@ class Survey extends React.Component{
   }
   async sendData(){
     this.setState({ loading: true })
-    const rawResponse = await fetch(apiURL, {
+    const rawResponse = await fetch(this.state.surveySections.apiURL, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -99,7 +111,7 @@ class Survey extends React.Component{
   
   render(){
     const { page , surveySections} = this.state;
-    const currentSurveySection = surveySections === null ? 0 : surveySections.filter(el=> el.id === page);
+    const currentSurveySection = surveySections === null ? 0 : surveySections.pages.filter(el=> el.pageID === page)[0];
     if(this.state.surveyDone && !this.state.loading){
       return(
         <SurveyDone surveyReset = {this.surveyReset} apiResponse = {this.state.apiResponse} />
@@ -112,21 +124,37 @@ class Survey extends React.Component{
     }
     else{
       return (
-        <>
+        <div className="survey-preview-container">
           {currentSurveySection !== 0 && (
-            <SurveySectionsTable 
-              page = {this.state.page} 
-              maxPage = {this.state.surveySections.length}
-              recordAnswer = {this.recordAnswer} 
-              surveySections = {currentSurveySection[0]}
-              nextPage = {this.nextPage}
-              backPage = {this.backPage}
-            />
+            <>
+              {surveySections.pages.length > 0 && (
+                <SurveySectionsTable 
+                  page = {this.state.page} 
+                  maxPage = {this.state.surveySections.pages.length}
+                  recordAnswer = {this.recordAnswer} 
+                  surveySections = {currentSurveySection}
+                  nextPage = {this.nextPage}
+                  backPage = {this.backPage}
+                />
+              )}
+              {surveySections.pages.length === 0 && (
+                <div className = 'no-pages-error'><ErrorOutlineIcon /><p>Please add pages to your survey</p></div>
+              )}
+            </>
           )}
-        </>
+        </div>
       );
     }
   }
 }
 
-export default Survey;
+const mapStateToProps = (store) => ({
+  userID: store.dashboard.userID
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  getSurveyPreviewJSON: ( userID, surveyID ) => dispatch(getSurveyPreviewJSON( userID, surveyID )),
+})
+
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Survey));

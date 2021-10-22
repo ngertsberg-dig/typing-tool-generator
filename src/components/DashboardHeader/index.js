@@ -14,7 +14,7 @@ export default function ButtonAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" id = 'AppBar'>
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             size="large"
             edge="start"
             color="inherit"
@@ -22,7 +22,8 @@ export default function ButtonAppBar() {
             sx={{ mr: 2 }}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
+          <img className = 'header-logo' src = {process.env.PUBLIC_URL + "/img/Dig-Logo.png"} alt = "dig logo" width = "100" height = "64" />
           <Link to = "/">
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Typing Tool Generator

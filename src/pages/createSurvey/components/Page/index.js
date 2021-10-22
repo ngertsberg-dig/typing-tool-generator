@@ -18,7 +18,7 @@ class Page extends React.Component{
         typeSelected: false,
         type: null
     }
-
+    
     componentDidMount(){
         // this.setState({ typeSelected: true, type: 1})
     }

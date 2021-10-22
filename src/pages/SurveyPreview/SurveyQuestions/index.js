@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import PaginationButtons from "./Pagination/";
 
-import { logoName } from '../../surveySections.js';
+import { logoName } from '../../../surveySections.js';
 import "./index.sass";
 const useStyles = makeStyles({
   table: {
@@ -34,8 +34,8 @@ export default function SimpleTable(props) {
         </div>
 
         <div className = 'bottom'>
-          <div className = 'title'><h1>{surveySections.title}</h1></div>
-          <div className = 'description'><p>{surveySections.description}</p></div>
+          <div className = 'title'><h1>{surveySections.pageTitle}</h1></div>
+          <div className = 'description'><p>{surveySections.pageDesc}</p></div>
         </div>
       </div>
       <Table className={classes.table} aria-label="simple table">
@@ -43,17 +43,17 @@ export default function SimpleTable(props) {
           <TableRow>
             <TableCell></TableCell>
             {surveySections.options.map((el,index)=>(
-                <TableCell className = 'table-header-title' key = {index}>{el.label}</TableCell>
-            ))}
+                <TableCell className = 'table-header-title' key = {index}>{el.optionLabel}</TableCell>
+            ))} 
           </TableRow>
         </TableHead>
         <TableBody>
           {surveySections.questions.map((question,index)=>(
-            <TableRow className = {question.name} key = {index}>
-                <TableCell align="center" className = 'table-question' dangerouslySetInnerHTML={{__html: question.title}}></TableCell>
-                {surveySections.options.map((button,index)=>(
+            <TableRow className = {`dig_var${question.digvar}`} key = {index}>
+                <TableCell align="center" className = 'table-question' dangerouslySetInnerHTML={{__html: question.questionText}}></TableCell>
+                {surveySections.options.map((option,index)=>(
                     <TableCell className = 'table-input' key = {index}>
-                        <input onClick={(e)=>props.recordAnswer(question.name,button.value,e)}value = {button.value} name = {question.name} type = 'radio'></input>
+                        <input onClick={(e)=>props.recordAnswer(`dig_var${question.digvar}`,option.optionValue,e)}value = {option.optionValue} name = {`dig_var${question.digvar}`} type = 'radio'></input>
                     </TableCell>
                 ))}
             </TableRow>

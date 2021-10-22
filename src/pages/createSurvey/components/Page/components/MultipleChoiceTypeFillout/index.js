@@ -6,7 +6,8 @@ import { TweenMax, Power4 } from "gsap";
 import { connect } from 'react-redux';
 import "./index.sass";
 import {
-    updateQuestionsAndOptions
+    updateQuestionsAndOptions,
+    updateDigVarCount
 } from "../../../../../../store/actions/createSurvey";
 
 class MultipleChoiceTypeFillout extends React.Component{
@@ -15,7 +16,6 @@ class MultipleChoiceTypeFillout extends React.Component{
         options: [],
         questions: []
     }
-
 
     animateIn = (optionOrQuestion) =>{
         const singleOptions = optionOrQuestion === 1 ? document.querySelectorAll(".single-option") : document.querySelectorAll(".single-question");
@@ -100,6 +100,7 @@ class MultipleChoiceTypeFillout extends React.Component{
             <>
                 <div className = 'options-section'>
                     <p>Multiple choice options:</p>
+                    {this.props.digvarcount}
                     <div className = 'options-container'>
                         {this.state.options.map((option,el)=>{
                             return(
@@ -121,7 +122,7 @@ class MultipleChoiceTypeFillout extends React.Component{
                         {this.state.questions.map((option,el)=>{
                             return(
                             <div className = 'single-question' key = {el} data-option={option.questionID}>
-                                <div className = 'q-p'><p>Question #: {option.questionID} <span className = 'remove-option' onClick = {(e)=>this.removeOption(option.questionID,2)} >x</span></p><p className = 'digvar'>dig_var{option.questionID}</p></div>
+                                <div className = 'q-p'><p>Question #: {option.questionID} <span className = 'remove-option' onClick = {(e)=>this.removeOption(option.questionID,2)} >x</span></p><p className = 'digvar'>dig_var{option.digvar}</p></div>
                                 <TextField label = "Question" value = {this.state.questions[el].questionText || ""} onChange = {(e)=>this.optionTextChange(e,option.questionID,"questionText",2)} />
                             </div>
                         )})}
@@ -140,7 +141,7 @@ const mapStateToProps = (store) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    updateQuestionsAndOptions: ( questions, options, pageID, newSurvey ) => dispatch(updateQuestionsAndOptions( questions, options, pageID, newSurvey ))
+    updateQuestionsAndOptions: ( questions, options, pageID, newSurvey ) => dispatch(updateQuestionsAndOptions( questions, options, pageID, newSurvey )),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(MultipleChoiceTypeFillout);

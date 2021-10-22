@@ -1,22 +1,55 @@
-          <div className = 'survey-container' data-surveys={this.state.surveys.length}>
-            <table class="studies-list table table-hover">
-              <thead class="studies-list__header">
-                <tr>
-                  <th class="studies-list__details">Study Name</th>
-                  <th class="studies-list__study-type">Study Type</th>
-                  <th class="studies-list__created">Date Created</th>
-                  <th class="studies-list__actions"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.state.surveys.map(( survey, surveyIndex) =>(
-                  <Link to = {`/survey/${survey.id}`} className = 'study-list-item' key = {surveyIndex}>
-                    <td><p className='survey-name'>{survey.survey_name}</p></td>
-                    <td><div class="study-list-item__simulator-type-label conjoint">Conjoint</div></td>
-                    <td><p className='survey-date'>yyyy-mm-dd</p></td>
-                    <td></td>
-                  </Link>
-                ))}    
-              </tbody>  
-            </table>
-          </div>
+.survey-container
+  .studies-list
+    background: #fff
+    box-shadow: 0px 2px 12px rgba(0,0,0,0.1)
+    text-align: left
+    width: 100%
+  table
+    border-top-left-radius: 5px
+    border-top-right-radius: 5px
+    td.delete-survey
+      color: white
+      font-weight: 600
+  .table thead th 
+    border-top: none
+    border-bottom: 1px solid #e8e8e8
+    font-weight: 500
+    letter-spacing: 0.04rem
+    color: #a6aec3
+    font-size: 12px
+    text-transform: uppercase
+  .table th
+    padding: 20px
+  tbody
+    td
+      text-decoration: none
+      padding: 0px
+      position: relative
+      padding: 0px 20px 0px 20px
+      &::after
+        content: ''
+        position: absolute
+        top: 0px
+        left: -2px
+        height: 100%
+        width: 2px
+        background-color: #f3f1f1
+        display: none
+    tr
+      &:hover
+        cursor: pointer
+        background-color: #f3f1f1
+        td.delete-survey
+          color: #E23636
+        td
+          &::after
+            display: block
+  .study-list-item__simulator-type-label.conjoint 
+    border: 1px solid #023e98
+    background: #c9dfff
+    color: #023e98
+    width: 100px
+    border-radius: 5px
+    text-align: center
+    font-size: 13px
+    padding: 5px 0px
