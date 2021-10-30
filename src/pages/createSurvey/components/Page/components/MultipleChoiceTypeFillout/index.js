@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import "./index.sass";
 import {
     updateQuestionsAndOptions,
-    updateDigVarCount
 } from "../../../../../../store/actions/createSurvey";
 
 class MultipleChoiceTypeFillout extends React.Component{
@@ -95,12 +94,16 @@ class MultipleChoiceTypeFillout extends React.Component{
         
     }
 
+    componentDidMount(){
+        const { currentPage } = this.props;
+        this.setState({ options: currentPage.options, questions: currentPage.questions });
+    }
+
     render(){
         return(
             <>
                 <div className = 'options-section'>
                     <p>Multiple choice options:</p>
-                    {this.props.digvarcount}
                     <div className = 'options-container'>
                         {this.state.options.map((option,el)=>{
                             return(

@@ -1,9 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import "./index.sass";
 import { withRouter } from 'react-router-dom';
 
-const SurveyList = ({ surveys, history, tableRowClick }) =>{
+const SurveyList = ({ surveys, tableRowClick, searchQuery }) =>{
     return(
         <div className = 'survey-container' data-surveys={surveys.length}>
         <table class="studies-list table table-hover">
@@ -17,12 +16,20 @@ const SurveyList = ({ surveys, history, tableRowClick }) =>{
           </thead>
           <tbody>
             {surveys.map(( survey, surveyIndex) =>(
-                <tr onClick = {(e)=>tableRowClick(survey.id,e)} className = "study-list-item">
-                    <td><p className='survey-name'>{survey.survey_name}</p></td>
-                    <td><div class="study-list-item__simulator-type-label conjoint">Conjoint</div></td>
-                    <td><p className='survey-date'>yyyy-mm-dd</p></td>
-                    <td className = "delete-survey">X</td>
-                </tr>
+              <>
+                {parseInt(survey.survey_deleted) === 0 &&(
+                  <>
+                    {survey.survey_name.match(new RegExp(searchQuery, 'i')) !== null &&(
+                      <tr onClick = {(e)=>tableRowClick(survey.id,e)} className = "study-list-item">
+                          <td><p className='survey-name'>{survey.survey_name}</p></td>
+                          <td><div class="study-list-item__simulator-type-label conjoint">Conjoint</div></td>
+                          <td><p className='survey-date'>{survey.survey_date}</p></td>
+                          <td className = "delete-survey">X</td>
+                      </tr>
+                    )}
+                  </>
+                )}
+              </>
             ))}    
           </tbody>  
         </table>

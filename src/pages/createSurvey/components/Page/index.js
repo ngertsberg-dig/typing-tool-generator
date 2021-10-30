@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 import "./index.sass";
 import {
     changePageTextVal,
-    removePage
+    removePage,
+    questionTypeSelect
 } from "../../../../store/actions/createSurvey";
 
 class Page extends React.Component{
@@ -24,6 +25,7 @@ class Page extends React.Component{
     }
 
     selectQuestionType = (type) =>{
+        this.props.questionTypeSelect( this.props.pageID, type, this.props.newSurvey );
         this.setState({ typeSelected: true, type: type });
     }
 
@@ -36,6 +38,7 @@ class Page extends React.Component{
     }
 
     render(){
+        const currentPage = this.props.newSurvey.pages.filter(el=>el.pageID === this.props.pageID)[0];
         return(
            <div className = 'new-page' data-pageid={this.props.pageID}>
                <div className = 'choose-question-type'>
@@ -44,14 +47,14 @@ class Page extends React.Component{
                         <TextField onChange = {(e) => this.changePageTextVal(e,"pageTitle",this.props.pageID)} value={this.props.newSurvey.pages[this.props.pageID - 1].pageTitle || ""} label="Page Title" />
                         <TextField onChange = {(e) => this.changePageTextVal(e,"pageDesc",this.props.pageID)}  value={this.props.newSurvey.pages[this.props.pageID - 1].pageDesc || ""} label="Page Description" />
                     </div>
-                    {!this.state.typeSelected && (
+                    {currentPage.questionType === undefined && (
                         <QuestionTypeSelection selectQuestionType = {this.selectQuestionType} />
                     )}
-                    {this.state.typeSelected && (
+                    {currentPage.questionType && (
                         <>
-                            {this.state.type === 1 && (
+                            {currentPage.questionType === 1 && (
                                 <>
-                                    <MultipleChoiceTypeFillout pageID = {this.props.pageID} />
+                                    <MultipleChoiceTypeFillout pageID = {this.props.pageID} currentPage = {currentPage} />
                                 </>
                             )}
                         </>
@@ -68,7 +71,8 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     changePageTextVal: ( textField, newText,pageID ) => dispatch(changePageTextVal( textField,newText,pageID )),
-    removePage: ( pageID, newSurvey ) => dispatch(removePage( pageID,newSurvey ))
+    removePage: ( pageID, newSurvey ) => dispatch(removePage( pageID,newSurvey )),
+    questionTypeSelect: ( pageID, questionType, newSurvey ) => dispatch(questionTypeSelect( pageID, questionType, newSurvey ))
 })
 
 

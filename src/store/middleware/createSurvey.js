@@ -22,8 +22,10 @@ const requestUserMiddleware = store => next => action => {
                 page.questions.map(question=>{
                     newDigVarCount = newDigVarCount + 1;  
                     question.digvar = newDigVarCount;
+                    return 0;
                 })
             }
+            return 0;
         })
          
         next({ type:"UPDATE_QUESTIONS_AND_ANSWERS_UPDATE", newSurvey, newDigVarCount });
@@ -33,6 +35,17 @@ const requestUserMiddleware = store => next => action => {
         const { newSurvey, newText, textField } = action;
         newSurvey[`${textField}`] = newText;
         next({ type: "UPDATE_PAGE_SUMMARY_TEXTFIELDS_UPDATE", newSurvey });
+    }
+
+    if(action.type === "UPDATE_QUESTION_TYPE"){
+        let { pageID, questionType, newSurvey } = action;
+        let newSurveyCopy = {...newSurvey};
+        let page = newSurveyCopy.pages.filter(el => el.pageID === pageID)[0];
+        page["questionType"] = questionType;
+        page.options = [];
+        page.questions = [];
+        newSurvey = newSurveyCopy;
+        next({ type: "UPDATE_QUESTION_TYPE_REDUCER", newSurvey });
     }
 
 

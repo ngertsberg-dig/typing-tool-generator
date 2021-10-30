@@ -1,11 +1,9 @@
 import React from "react";
-import AddIcon from '@mui/icons-material/Add';
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { withRouter } from 'react-router-dom';
 import SurveyList from "./components/SurveyList";
+import SurveyListSearch from "./components/SurveyListSearch";
 import "./index.sass";
-import Button from '@mui/material/Button';
 import { popupMessage } from "../../helpers/popupMessage";
 import {
   getSurveys,
@@ -15,7 +13,8 @@ import {
 class Dashboard extends React.Component{
 
   state={
-    surveys:[]
+    surveys:[],
+    searchQuery: ""
   }
   
   async componentDidMount(){
@@ -33,7 +32,7 @@ class Dashboard extends React.Component{
     }
     else{
       const resp = await this.props.deleteSurvey( this.props.userID, surveyID );
-      if(resp === 1){
+      if(typeof resp === "object" ? resp[0] === 1 : resp === 1){
         this.props.history.push(`/createSurvey`);
         this.props.history.push(`/`);
         popupMessage("Survey Deleted","success");
@@ -41,26 +40,26 @@ class Dashboard extends React.Component{
     }
   }
 
+	handleSearch = value => {
+    this.setState({ searchQuery: value })
+	};
+
   render(){
     return(
       <>
         <div className = 'dashboard-container'>
 
           <div className = 'top'>
-            <h1 className='title'>Surveys</h1>
-            <div className = 'button-container'>
-              <Button className='create-survey-button' variant="contained" onClick = {this.goToSurveyCreation}>
-                <AddIcon /> <p>CREATE SURVEY</p>
-              </Button>
-            </div>
+            <SurveyListSearch onChange={ this.handleSearch } navigate = {this.goToSurveyCreation} />
           </div>
 
           {this.state.surveys.length === 0 && (
             <p className = 'no-surveys'>It does not seem you have any surveys created, create one using the button above.</p>
           )}
 
+
           {this.state.surveys.length !== 0 && (
-            <SurveyList surveys = {this.state.surveys} tableRowClick = { this.tableRowClick } />
+            <SurveyList surveys = {this.state.surveys} tableRowClick = { this.tableRowClick } searchQuery = { this.state.searchQuery } />
           )}
 
         </div>

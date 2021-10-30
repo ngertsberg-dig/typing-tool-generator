@@ -20,7 +20,8 @@ import {
     finishCreatingSurvey,
     getSurveyByID,
     setSurveyJSON,
-    resetNewSurvey
+    resetNewSurvey,
+    updateExistingSurvey
 } from "../../store/actions/createSurvey";
 
 class createSurvey extends React.Component{
@@ -28,17 +29,17 @@ class createSurvey extends React.Component{
     state = {
         SurveyQuestion:[],
         surveyID: null,
+        surveyUuid: null,
         createOrUpdate: 1
     };
 
     async componentDidMount(){
-        console.log("hello location ->",this.props.location)
-        console.log(this.props)
         const surveyID = this.props.match.params.id;
         if(surveyID !== undefined){
             this.setState({ surveyID, createOrUpdate: 2 });
             const surveyData = await this.props.getSurveyByID(surveyID);
             if(surveyData.success){
+                this.setState({ surveyUuid: surveyData.res.survey_uuid });
                 this.props.setSurveyJSON(surveyData.res);
             }
         }
@@ -83,12 +84,24 @@ class createSurvey extends React.Component{
             }
         })
         if(!hasError){
-            const response = await this.props.finishCreatingSurvey(this.props.newSurvey);
-            if(response.success){
-                const surveyID = response.id;
-                this.props.history.push(`/`);
-                this.props.history.push(`/survey/${surveyID}`);
-                popupMessage("Survey Saved Successfully","success");
+            const createOrUpdate = parseInt(this.state.createOrUpdate);
+            //create
+            if(createOrUpdate === 1){
+                const response = await this.props.finishCreatingSurvey(this.props.newSurvey);
+                if(response.success){
+                    const surveyID = response.id;
+                    this.props.history.push(`/`);
+                    this.props.history.push(`/survey/${surveyID}`);
+                    popupMessage("Survey Saved Successfully","success");
+                }
+            }
+            //update
+            else if(createOrUpdate === 2){
+                const surveyID = parseInt(this.props.match.params.id);
+                const response = await this.props.updateExistingSurvey(this.props.newSurvey,this.props.userID,surveyID);
+                if(response.success){
+                    popupMessage("Survey Updated Successfully","success");
+                }
             }
         }
     }
@@ -100,12 +113,11 @@ class createSurvey extends React.Component{
     render(){
         return(
             <>
-                <div className = 'dashboard-container' data-createOrUpdate={this.state.createOrUpdate}>
+                <div className = 'dashboard-container' data-createorupdate={this.state.createOrUpdate}>
                     <h1>Create Survey</h1>
                     <div className = 'create-survey-container'>
                         <div className = 'create-survey-inputs'>
                             <div className = 'base-inputs'>
-                                {this.props.digvarcount}
                                 <TextField onChange = {(e) => this.changeTextVal(e,"surveyName")} value={this.props.newSurvey.surveyName} label="Survey Name" />
                                 <TextField onChange = {(e) => this.changeTextVal(e,"apiURL")} className ='remove-margins' value={this.props.newSurvey.apiURL} label="API URL" />
                                 <TextField onChange = {(e) => this.changeTextVal(e,"documentationURL")} value={this.props.newSurvey.documentationURL} label="Documentation URL" />
@@ -120,11 +132,15 @@ class createSurvey extends React.Component{
                                     Add Page
                                 </Button>
                                 {parseInt(this.state.createOrUpdate) === 2 && (
-                                    <Button id='completeCreateSurvey' variant="contained" endIcon={<VisibilityIcon />} onClick = {this.previewSurvey} style={{"marginRight":"5px"}}>
-                                        Preview
-                                    </Button>
+                                    <>
+                                        <a rel="noopener noreferrer" target="_blank" href = {`${process.configs.typingtoolfrontend}?uuid=${this.state.surveyUuid}`} className='previewlink'>
+                                        <Button id='completeCreateSurvey' variant="contained" endIcon={<VisibilityIcon />} style={{"marginRight":"5px"}}>
+                                            Preview
+                                        </Button>
+                                    </a>
+                                    </>
                                 )}
-                                <Button id='completeCreateSurvey' variant="contained" endIcon={<CheckIcon />} onClick = {this.finishNewSurvey}>
+                                <Button id='completeCreateSurvey' variant="contained" endIcon={<CheckIcon />} onClick = {()=>this.finishNewSurvey()}>
                                     {parseInt(this.state.createOrUpdate) === 1 ? "Finish" : "Update" }
                                 </Button>
                             </div>
@@ -141,6 +157,7 @@ class createSurvey extends React.Component{
 const mapStateToProps = (store) => ({
     newSurvey: store.createSurvey.newSurvey, 
     digvarcount: store.createSurvey.digvarcount, 
+    userID: store.dashboard.userID
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -150,6 +167,7 @@ const mapDispatchToProps = (dispatch) => ({
     getSurveyByID: ( surveyID ) => dispatch(getSurveyByID( surveyID )),
     setSurveyJSON: ( surveyJSON ) => dispatch(setSurveyJSON( surveyJSON )),
     resetNewSurvey:  () => dispatch(resetNewSurvey()),
+    updateExistingSurvey:  ( newSurvey, userID, surveyID ) => dispatch(updateExistingSurvey( newSurvey, userID, surveyID )),
     
 })
 

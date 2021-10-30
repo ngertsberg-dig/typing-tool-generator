@@ -47,3 +47,18 @@ export const resetNewSurvey = () => async (dispatch) => {
   dispatch({ type: "resetNewSurvey"});
 };
 
+export const UPDATE_QUESTION_TYPE = "UPDATE_QUESTION_TYPE";
+export const questionTypeSelect = ( pageID, questionType, newSurvey ) => ({ type: UPDATE_QUESTION_TYPE, pageID, questionType, newSurvey });
+
+
+
+export const updateExistingSurvey = ( newSurvey, userID, surveyID ) => async (dispatch) =>{
+  const axios = axiosConfig();
+  try{
+    const response = await axios.post("survey/updateExistingSurvey", { newSurvey, userID, surveyID });
+    if(response.status === 200){
+      return { res: response.data, success: true };
+    }
+
+  }catch(err){console.log(err)}
+}
