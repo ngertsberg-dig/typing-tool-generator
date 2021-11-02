@@ -102,7 +102,7 @@ class MultipleChoiceTypeFillout extends React.Component{
     render(){
         return(
             <>
-                <div className = 'options-section'>
+                <div className = 'options-section multiple-choice-type'>
                     <p>Multiple choice options:</p>
                     <div className = 'options-container'>
                         {this.state.options.map((option,el)=>{
@@ -114,23 +114,23 @@ class MultipleChoiceTypeFillout extends React.Component{
                             </div>
                         )})}
                     </div>
-                    <Button variant="contained" endIcon={<AddIcon />} onClick = {(e)=>this.addOption(1)}>
+                    <Button className = "add-ui-button"variant="contained" endIcon={<AddIcon />} onClick = {(e)=>this.addOption(1)}>
                         Add Option
                     </Button>
                 </div>
 
-                <div className = 'questions-section'>
+                <div className = 'questions-section multiple-choice-type'>
                     <p>Multiple choice questions:</p>
                     <div className = 'questions-container'>
                         {this.state.questions.map((option,el)=>{
                             return(
                             <div className = 'single-question' key = {el} data-option={option.questionID}>
                                 <div className = 'q-p'><p>Question #: {option.questionID} <span className = 'remove-option' onClick = {(e)=>this.removeOption(option.questionID,2)} >x</span></p><p className = 'digvar'>dig_var{option.digvar}</p></div>
-                                <TextField label = "Question" value = {this.state.questions[el].questionText || ""} onChange = {(e)=>this.optionTextChange(e,option.questionID,"questionText",2)} />
+                                <TextField multiline label = "Question" value = {this.state.questions[el].questionText || ""} onChange = {(e)=>this.optionTextChange(e,option.questionID,"questionText",2)} />
                             </div>
                         )})}
                     </div>
-                    <Button variant="contained" endIcon={<AddIcon />} onClick = {(e)=>this.addOption(2)}>
+                    <Button className = "add-ui-button" variant="contained" endIcon={<AddIcon />} onClick = {(e)=>this.addOption(2)}>
                         Add Question
                     </Button>
                 </div>

@@ -113,36 +113,38 @@ class createSurvey extends React.Component{
     render(){
         return(
             <>
-                <div className = 'dashboard-container' data-createorupdate={this.state.createOrUpdate}>
-                    <h1>Create Survey</h1>
-                    <div className = 'create-survey-container'>
-                        <div className = 'create-survey-inputs'>
-                            <div className = 'base-inputs'>
-                                <TextField onChange = {(e) => this.changeTextVal(e,"surveyName")} value={this.props.newSurvey.surveyName} label="Survey Name" />
-                                <TextField onChange = {(e) => this.changeTextVal(e,"apiURL")} className ='remove-margins' value={this.props.newSurvey.apiURL} label="API URL" />
-                                <TextField onChange = {(e) => this.changeTextVal(e,"documentationURL")} value={this.props.newSurvey.documentationURL} label="Documentation URL" />
+                <div className='create-or-update-page-container'>
+                    <div className = 'dashboard-container' data-createorupdate={this.state.createOrUpdate}>
+                        <div className = 'create-survey-container'>
+                            <h1>Create a New Study</h1>
+                            <div className = 'create-survey-inputs'>
+                                <div className = 'base-inputs'>
+                                    <TextField onChange = {(e) => this.changeTextVal(e,"surveyName")} value={this.props.newSurvey.surveyName} label="Survey Name" />
+                                    <TextField onChange = {(e) => this.changeTextVal(e,"apiURL")} className ='remove-margins' value={this.props.newSurvey.apiURL} label="API URL" />
+                                    <TextField onChange = {(e) => this.changeTextVal(e,"documentationURL")} value={this.props.newSurvey.documentationURL} label="Documentation URL" />
+                                </div>
                             </div>
-                        </div>
-                        <div id = 'SurveyCreationSection'>
-                            {this.props.newSurvey.pages.map((SurveyPage,el)=>(
-                                <Page key={el} pageID = {SurveyPage.pageID} />
-                            ))}
-                            <div className = 'bottom-buttons'>
-                                <Button variant="contained" endIcon={<PostAddIcon />} onClick = {this.addPage}>
-                                    Add Page
-                                </Button>
-                                {parseInt(this.state.createOrUpdate) === 2 && (
-                                    <>
-                                        <a rel="noopener noreferrer" target="_blank" href = {`${process.configs.typingtoolfrontend}?uuid=${this.state.surveyUuid}`} className='previewlink'>
-                                        <Button id='completeCreateSurvey' variant="contained" endIcon={<VisibilityIcon />} style={{"marginRight":"5px"}}>
-                                            Preview
-                                        </Button>
-                                    </a>
-                                    </>
-                                )}
-                                <Button id='completeCreateSurvey' variant="contained" endIcon={<CheckIcon />} onClick = {()=>this.finishNewSurvey()}>
-                                    {parseInt(this.state.createOrUpdate) === 1 ? "Finish" : "Update" }
-                                </Button>
+                            <div id = 'SurveyCreationSection'>
+                                {this.props.newSurvey.pages.map((SurveyPage,el)=>(
+                                    <Page key={el} pageID = {SurveyPage.pageID} />
+                                ))}
+                                <div className = 'bottom-buttons'>
+                                    <Button variant="contained" endIcon={<PostAddIcon />} onClick = {this.addPage}>
+                                        Add Page
+                                    </Button>
+                                    {parseInt(this.state.createOrUpdate) === 2 && (
+                                        <>
+                                            <a rel="noopener noreferrer" target="_blank" href = {`${process.configs.typingtoolfrontend}?uuid=${this.state.surveyUuid}`} className='previewlink'>
+                                            <Button id='completeCreateSurvey' variant="contained" endIcon={<VisibilityIcon />} style={{"marginRight":"5px"}}>
+                                                Preview
+                                            </Button>
+                                        </a>
+                                        </>
+                                    )}
+                                    <Button id='completeCreateSurvey' variant="contained" endIcon={<CheckIcon />} onClick = {()=>this.finishNewSurvey()}>
+                                        {parseInt(this.state.createOrUpdate) === 1 ? "Finish" : "Update" }
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     </div>

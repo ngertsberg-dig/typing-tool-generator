@@ -1,6 +1,7 @@
 import React from 'react';
 import QuestionTypeSelection from "./components/QuestionTypeSelection";
 import MultipleChoiceTypeFillout from "./components/MultipleChoiceTypeFillout";
+import SelectDropdownTypeFillout from "./components/SelectDropdownTypeFillout";
 import TextField from '@mui/material/TextField';
 import { connect } from 'react-redux';
 import "./index.sass";
@@ -55,6 +56,11 @@ class Page extends React.Component{
                             {currentPage.questionType === 1 && (
                                 <>
                                     <MultipleChoiceTypeFillout pageID = {this.props.pageID} currentPage = {currentPage} />
+                                </>
+                            )}
+                            {currentPage.questionType === 2 && (
+                                <>
+                                    <SelectDropdownTypeFillout pageID = {this.props.pageID} currentPage = {currentPage} />
                                 </>
                             )}
                         </>
