@@ -1,43 +1,56 @@
 import "./config/";
 import React from 'react';
+import { useEffect } from "react";
 //import FileUpload from './pages/SurveyPreview/FileUpload';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import store from "./store/store.js";
-import { Provider } from "react-redux";
 import DashboardHeader from "./components/DashboardHeader";
-
+import { fetchUser, logout } from "./store/actions/user";
+import { connect } from "react-redux";
 import SurveyCreation from './pages/createSurvey';
 import Dashboard from './pages/Dashboard';
 import "./index.sass";
 import './App.css';
-class App extends React.Component{
-  render(){
-    return (  
-      <Provider store={store}>
-        <div className="App">
-         
-          <div id = 'errorContainer'>Please fill out all inputs</div>
-          {/* <Router basename={`typingtools/${baseName}`}> */}
-          <Router basename="">
-            <DashboardHeader />
-            <Switch>
 
-              <Route path = {`/createSurvey`}>
-                <SurveyCreation />
-              </Route>
-              
-              <Route path = {`/survey/:id`} component={SurveyCreation} />
-
-              <Route path = {`/`}>
-                <Dashboard />
-              </Route>
-
-            </Switch>
-          </Router>
-        </div>
-      </Provider>
-    );
+function App({ user, fetchUser, logout }) {
+  useEffect(() => {
+    fetchUser();
+    // eslint-disable-next-line
+  }, []);
+  if (!user) {
+    return null;
   }
+
+  return (
+    <div className="App">
+    <div id = 'errorContainer'>Please fill out all inputs</div>
+    {/* <Router basename={`typingtools/${baseName}`}> */}
+    <Router basename="">
+      <DashboardHeader user={user} onLogOut={logout} />
+      <Switch>
+
+        <Route path = {`/createSurvey`}>
+          <SurveyCreation />
+        </Route>
+        
+        <Route path = {`/survey/:id`} component={SurveyCreation} />
+
+        <Route path = {`/`}>
+          <Dashboard />
+        </Route>
+
+      </Switch>
+    </Router>
+  </div>
+  );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  user: state.user.user,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchUser: () => dispatch(fetchUser()),
+  logout: () => dispatch(logout()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

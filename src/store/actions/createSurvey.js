@@ -17,10 +17,21 @@ export const updateQuestionsAndOptions = ( questions, options, pageID, newSurvey
 export const UPDATE_PAGE_SUMMARY_TEXTFIELDS = "UPDATE_PAGE_SUMMARY_TEXTFIELDS";
 export const changeTextVal = ( textField,newText,newSurvey ) => ({ type: UPDATE_PAGE_SUMMARY_TEXTFIELDS, textField,newText,newSurvey });
 
-export const finishCreatingSurvey = ( surveyJSON ) => async (dispatch) =>{
+export const finishCreatingSurvey = ( surveyJSON, userID ) => async (dispatch) =>{
   const axios = axiosConfig();
   try{
-    const response = await axios.post("survey/createNewSurvey", { surveyJSON });
+    let newDigVarCount = 0;
+    surveyJSON.pages.map(page=>{
+        if(page.questions){
+            page.questions.map(question=>{
+                newDigVarCount = newDigVarCount + 1;  
+                question.digvar = newDigVarCount;
+                return 0;
+            })
+        }
+        return 0;
+    })
+    const response = await axios.post("survey/createNewSurvey", { surveyJSON, userID });
     if(response.status === 200){
       return { id:response.data, success:true} ;
     }
@@ -52,10 +63,10 @@ export const questionTypeSelect = ( pageID, questionType, newSurvey ) => ({ type
 
 
 
-export const updateExistingSurvey = ( newSurvey, userID, surveyID ) => async (dispatch) =>{
+export const updateExistingSurvey = ( newSurvey, userID, surveyID, surveyUuid ) => async (dispatch) =>{
   const axios = axiosConfig();
   try{
-    const response = await axios.post("survey/updateExistingSurvey", { newSurvey, userID, surveyID });
+    const response = await axios.post("survey/updateExistingSurvey", { newSurvey, userID, surveyID, surveyUuid });
     if(response.status === 200){
       return { res: response.data, success: true };
     }

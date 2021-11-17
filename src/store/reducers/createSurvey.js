@@ -48,7 +48,7 @@ export default ( state = intialState, action ) => {
         case "UPDATE_QUESTIONS_AND_ANSWERS_UPDATE":
             return {...state, newSurvey: JSON.parse(JSON.stringify(action.newSurvey)), digvarcount: action.newDigVarCount};
         case "setSurveyJSON":
-            return {...state, newSurvey: JSON.parse((action.payload.surveyJSON.survey_json))};
+            return {...state, newSurvey: JSON.parse((action.payload.surveyJSON))};
         case "resetNewSurvey":
             return {...state, newSurvey: JSON.parse(JSON.stringify(state.newSurveyOriginalCopy)), digvarcount: 0};
         case "UPDATE_QUESTION_TYPE_REDUCER":

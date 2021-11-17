@@ -10,9 +10,9 @@ export const popupMessage = ( message, type ) =>{
     }
     TweenMax.set(err,{y: 0});
     TweenMax.set(err,{display: "inline"});
-    TweenMax.to(err,0.5,{y:-125,ease:Power4.easeOut,onComplete:()=>{
-        TweenMax.to(err,0.25,{y:0,delay:3,ease:Power4.easeIn,onComplete:()=>{
-            TweenMax.set(err,{display:"none",y:0,});
+    TweenMax.to(err,0.5,{x:20,ease:Power4.easeOut,onComplete:()=>{
+        TweenMax.to(err,0.25,{x:0,delay:3,ease:Power4.easeIn,onComplete:()=>{
+            TweenMax.set(err,{display:"none",x:0});
         }})
     }});
 }

@@ -63,7 +63,7 @@ class MultipleChoiceTypeFillout extends React.Component{
         let options = optionOrQuestion === 1 ? [...this.state.options] : [...this.state.questions];
         const optionsWithout = optionOrQuestion === 1 ?  options.filter(el=>el.optionID !== optionID) : options.filter(el=>el.questionID !== optionID);
         const selectedOption = optionOrQuestion === 1 ?  options.find(el=>(el.optionID === optionID)) : options.find(el=>(el.questionID === optionID));
-        selectedOption[`${keyReplace}`] = e.target.value;
+        selectedOption[`${keyReplace}`] = keyReplace === "optionValue" ?  e.target.value.replace(/\D/,'') : e.target.value;
         optionsWithout.push(selectedOption);
         options = optionsWithout;
         options = optionOrQuestion === 1 ? options.sort((a,b)=> a.optionID > b.optionID ? 1 : -1) : options.sort((a,b)=> a.questionID > b.questionID ? 1 : -1);

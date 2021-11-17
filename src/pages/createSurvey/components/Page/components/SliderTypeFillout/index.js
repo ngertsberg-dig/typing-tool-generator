@@ -36,8 +36,8 @@ class MultipleChoiceTypeFillout extends React.Component{
         newOption = {
             questionID: (options.length + 1),
             questionText: null,
-            questionDropdowns: [
-                { dropdownValue: -1, dropdownID: 1, isDefault: true, dropdownText: "Default Value" }
+            slider: [
+                { sliderMin: 0, dropdownID: 1, sliderMax: 5, sliderStep: 1, sliderDefault: 0 }
             ]
         }
 
@@ -79,9 +79,9 @@ class MultipleChoiceTypeFillout extends React.Component{
         let questionsWithout = questions.filter(el=>el.questionID !== questionID);
         let currentQuestion = questions.filter(el=>el.questionID === questionID)[0];
 
-        currentQuestion.questionDropdowns.push({
+        currentQuestion.slider.push({
             dropdownValue: null, 
-            dropdownID: currentQuestion.questionDropdowns.length + 1, 
+            dropdownID: currentQuestion.slider.length + 1, 
             isDefault: false, 
             dropdownText: "" 
         });
@@ -113,9 +113,9 @@ class MultipleChoiceTypeFillout extends React.Component{
         let questionsWithout = questions.filter(el=>el.questionID !== questionID);
         let currentQuestion = questions.filter(el=>el.questionID === questionID)[0];
 
-        currentQuestion.questionDropdowns = currentQuestion.questionDropdowns.filter(el=>el.dropdownID !== dropdownID);
+        currentQuestion.slider = currentQuestion.slider.filter(el=>el.dropdownID !== dropdownID);
        
-        currentQuestion.questionDropdowns.map(( drp, drpel )=>{
+        currentQuestion.slider.map(( drp, drpel )=>{
             drp.dropdownID = drpel + 1;
             return 0;
         })
@@ -126,13 +126,13 @@ class MultipleChoiceTypeFillout extends React.Component{
     }
 
     dropdownWatchChange = ( e, dropdownID, questionID, keyName ) => {
+
         let questions = [...this.state.questions];
         let questionsWithout = questions.filter(el=>el.questionID !== questionID);
         let currentQuestion = questions.filter(el=>el.questionID === questionID)[0];
        
-        let currentDropdown = currentQuestion.questionDropdowns.filter(el=>el.dropdownID === dropdownID)[0];
-        
-        currentDropdown[`${keyName}`] = keyName === "dropdownValue" ?  e.target.value.replace(/\D/,'') : e.target.value;
+        let currentDropdown = currentQuestion.slider.filter(el=>el.dropdownID === dropdownID)[0];
+        currentDropdown[`${keyName}`] = e.target.value.replace(/\D/,'');
 
         questionsWithout.push(currentQuestion);
         questionsWithout.sort((a,b)=>(a.questionID > b.questionID ? 1 : -1));
@@ -157,14 +157,14 @@ class MultipleChoiceTypeFillout extends React.Component{
         return(
             <>
                 <div className = 'questions-section dropdown-type'>
-                    <p>Select Dropdown choice questions:</p>
+                    <p>Slider choice questions:</p>
                     <div className = 'questions-container'>
                         {this.state.questions.map((option,el)=>{
                             return(
-                            <div className = 'single-question dropdown-option-question' key = {el} data-option={option.questionID}>
+                            <div className = 'single-question dropdown-option-question slider-type' key = {el} data-option={option.questionID}>
                                 <div className = 'q-p'><p>Question #: {option.questionID} <span className = 'remove-option' onClick = {(e)=>this.removeOption(option.questionID,2)} >x</span></p><p className = 'digvar'>dig_var{option.digvar}</p></div>
                                 <TextField className = "question-text"   multiline label = "Question" value = {this.state.questions[el].questionText || ""} onChange = {(e)=>this.optionTextChange(e,option.questionID,"questionText",2)} />
-                                {option.questionDropdowns.map(( dropdown, dropdownIndex )=>{
+                                {option.slider.map(( dropdown, dropdownIndex )=>{
                                     return(
                                         <div className = 'single-dropdown-option' key = {dropdownIndex} data-dropdowndefault={dropdown.isDefault}>
                                             <div className='option-id-container'><p className = 'option-id'>Option # {dropdown.dropdownID}</p></div>
@@ -172,23 +172,15 @@ class MultipleChoiceTypeFillout extends React.Component{
                                                 <div className = 'remove-dropdown-option' onClick = {(e)=>this.removeDropdownOption( dropdown.dropdownID, option.questionID )} >X</div>
                                             )}
                                             <div className = "input-container">
-                                                <TextField label = "Dropdown Text" value = { dropdown.dropdownText } onChange = { (e)=>this.dropdownWatchChange( e, dropdown.dropdownID, option.questionID, "dropdownText" ) } />
-
-                                                {!dropdown.isDefault && (
-                                                    <TextField label = "Dropdown Value" value = { dropdown.dropdownValue } onChange = { (e)=>this.dropdownWatchChange( e, dropdown.dropdownID, option.questionID, "dropdownValue" ) }/>
-                                                )}
-                                                {dropdown.isDefault && (
-                                                    <TextField disabled label = "Dropdown Value" value = { dropdown.dropdownValue } />
-                                                )}
+                                                <TextField label = "Slider Min" value = { dropdown.sliderMin } onChange = { (e)=>this.dropdownWatchChange( e, dropdown.dropdownID, option.questionID, "sliderMin" ) } />
+                                                <TextField label = "Slider Max" value = { dropdown.sliderMax } onChange = { (e)=>this.dropdownWatchChange( e, dropdown.dropdownID, option.questionID, "sliderMax" ) }/>
+                                                <TextField label = "Slider Step" value = { dropdown.sliderStep } onChange = { (e)=>this.dropdownWatchChange( e, dropdown.dropdownID, option.questionID, "sliderStep" ) }/>
+                                                <TextField label = "Slider Default" value = { dropdown.sliderDefault} onChange = { (e)=>this.dropdownWatchChange( e, dropdown.dropdownID, option.questionID, "sliderDefault" ) }/>
                                             </div>
                                         </div>
                                     )
                                 })}
-                                <div className='add-dropdown-option-button-container'>
-                                    <Button className = "add-ui-button add-dropdown-option-button" variant="contained" endIcon={<AddIcon />} onClick = {(e)=>this.addDropdownOption( option.questionID )}>
-                                        Add Dropdown Option
-                                    </Button>
-                                </div>
+
                             </div>
                         )})}
                     </div>

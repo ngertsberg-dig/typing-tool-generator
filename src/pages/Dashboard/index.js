@@ -59,7 +59,7 @@ class Dashboard extends React.Component{
 
 
           {this.state.surveys.length !== 0 && (
-            <SurveyList surveys = {this.state.surveys} tableRowClick = { this.tableRowClick } searchQuery = { this.state.searchQuery } />
+            <SurveyList surveys = {this.state.surveys} tableRowClick = { this.tableRowClick } searchQuery = { this.state.searchQuery } userID = {this.props.userID} />
           )}
 
         </div>
@@ -69,7 +69,7 @@ class Dashboard extends React.Component{
 }
 
 const mapStateToProps = (store) =>({
-  userID: store.dashboard.userID
+  userID: store.user.user.id
 });
 
 const mapDispatchToProps = (dispatch) =>({

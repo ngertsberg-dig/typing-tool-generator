@@ -40,7 +40,7 @@ class createSurvey extends React.Component{
             const surveyData = await this.props.getSurveyByID(surveyID);
             if(surveyData.success){
                 this.setState({ surveyUuid: surveyData.res.survey_uuid });
-                this.props.setSurveyJSON(surveyData.res);
+                this.props.setSurveyJSON(surveyData.res.data);
             }
         }
         else{
@@ -87,7 +87,7 @@ class createSurvey extends React.Component{
             const createOrUpdate = parseInt(this.state.createOrUpdate);
             //create
             if(createOrUpdate === 1){
-                const response = await this.props.finishCreatingSurvey(this.props.newSurvey);
+                const response = await this.props.finishCreatingSurvey( this.props.newSurvey, this.props.userID );
                 if(response.success){
                     const surveyID = response.id;
                     this.props.history.push(`/`);
@@ -98,7 +98,7 @@ class createSurvey extends React.Component{
             //update
             else if(createOrUpdate === 2){
                 const surveyID = parseInt(this.props.match.params.id);
-                const response = await this.props.updateExistingSurvey(this.props.newSurvey,this.props.userID,surveyID);
+                const response = await this.props.updateExistingSurvey(this.props.newSurvey,this.props.userID,surveyID,this.state.surveyUuid);
                 if(response.success){
                     popupMessage("Survey Updated Successfully","success");
                 }
@@ -121,7 +121,6 @@ class createSurvey extends React.Component{
                                 <div className = 'base-inputs'>
                                     <TextField onChange = {(e) => this.changeTextVal(e,"surveyName")} value={this.props.newSurvey.surveyName} label="Survey Name" />
                                     <TextField onChange = {(e) => this.changeTextVal(e,"apiURL")} className ='remove-margins' value={this.props.newSurvey.apiURL} label="API URL" />
-                                    <TextField onChange = {(e) => this.changeTextVal(e,"documentationURL")} value={this.props.newSurvey.documentationURL} label="Documentation URL" />
                                 </div>
                             </div>
                             <div id = 'SurveyCreationSection'>
@@ -159,17 +158,17 @@ class createSurvey extends React.Component{
 const mapStateToProps = (store) => ({
     newSurvey: store.createSurvey.newSurvey, 
     digvarcount: store.createSurvey.digvarcount, 
-    userID: store.dashboard.userID
+    userID: store.user.user.id
 })
 
 const mapDispatchToProps = (dispatch) => ({
     changeTextVal: ( textField, newText,newSurvey ) => dispatch(changeTextVal( textField,newText,newSurvey )),
     updatePages: (SurveyPages) => dispatch(updatePages(SurveyPages)),
-    finishCreatingSurvey: ( surveyJson ) => dispatch(finishCreatingSurvey( surveyJson )),
+    finishCreatingSurvey: ( surveyJson, userID ) => dispatch(finishCreatingSurvey( surveyJson, userID )),
     getSurveyByID: ( surveyID ) => dispatch(getSurveyByID( surveyID )),
     setSurveyJSON: ( surveyJSON ) => dispatch(setSurveyJSON( surveyJSON )),
     resetNewSurvey:  () => dispatch(resetNewSurvey()),
-    updateExistingSurvey:  ( newSurvey, userID, surveyID ) => dispatch(updateExistingSurvey( newSurvey, userID, surveyID )),
+    updateExistingSurvey:  ( newSurvey, userID, surveyID, surveyUuid ) => dispatch(updateExistingSurvey( newSurvey, userID, surveyID, surveyUuid )),
     
 })
 
